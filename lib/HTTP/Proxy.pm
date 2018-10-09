@@ -526,8 +526,9 @@ sub _send_response_headers {
             $response->remove_header("Content-Length");
             $response->content('');
         }
-        elsif ( $response->request && $response->request->method eq "HEAD" )
+        elsif ( !$response->request || $response->request->method eq "HEAD" )
         {    # probably OK, says HTTP::Daemon
+	     # or Response w/o Request, i.e. CONNECT
         }
         else {
             if ( $conn->proto_ge("HTTP/1.1") ) {
